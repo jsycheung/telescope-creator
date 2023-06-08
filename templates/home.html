@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="form-container">
+    <h3>Create Telescope</h3>
+    <form action="{{ url_for('create_telescope') }}" method="POST">
+        {{ create_form.csrf_token() }}
+        {{ create_form.class_name.label }}
+        {{ create_form.class_name }}
+        <br>
+        {{ create_form.location.label }}
+        {{ create_form.location }}
+        <br>
+        {{ create_form.wavelength.label }}
+        {{ create_form.wavelength }}
+        <br>
+        {{ create_form.design.label }}
+        {{ create_form.design }}
+        <br>
+        {{ create_form.optics.label }}
+        {{ create_form.optics }}
+        <br>
+        {{ create_form.fov.label }}
+        {{ create_form.fov }}
+        <br>
+        {{ create_form.instrument.label }}
+        {{ create_form.instrument }}
+        <br>
+        {{ create_form.extras.label }}
+        {{ create_form.extras }}
+        <br>
+        {{ create_form.submit }}
+    </form>
+</div>
+<div>
+    <h3>Budget</h3>
+    <table>
+        <tr>
+            <th>Points you have:</th>
+            <th>{{ max_pt }}</th>
+        </tr>
+    </table>
+</div>
+{% endblock %}
