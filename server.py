@@ -7,10 +7,10 @@ import pyautogui as pag
 app = Flask(__name__)
 app.secret_key = "keep this secret"
 
-@app.route("/", methods=["POST"])
+@app.route("/")
 def home():
     create_form = CreateForm()
-    return render_template("home.html", create_form=create_form, max_pt=max_pt)
+    return render_template("home.html", create_form=create_form)
 
 # @app.route("/info")
 # def info():
@@ -43,9 +43,9 @@ def show_summary():
 
 @app.route("/telescopes")
 def show_telescopes():
-    pass
-
-
+    telescopes = Telescope.query.all() # List of objects
+    return render_template("telescopes.html", telescopes=telescopes)
+    
 
 
 if __name__ == "__main__":

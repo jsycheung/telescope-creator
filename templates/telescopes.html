@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block body %}
+{% for telescope in telescopes %}
+<div class="telescope-container">
+    class: {{ telescope.class_name }}
+    location: {{ telescope.location }}
+    wavelength: {{ telescope.wavelength }}
+    design: {{ telescope.design }}
+    optics: {{ telescope.optics }}
+    fov: {{ telescope.fov }}
+    instrument: {{ telescope.instrument }}
+    extras: {{ telescope.extras }}
+</div>
+{% endfor %}
+{% endblock %}
