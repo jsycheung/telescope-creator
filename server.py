@@ -22,8 +22,7 @@ def home():
 def create_telescope():
     create_form = CreateForm()
     if create_form.validate_on_submit():
-        print(create_form.class_name.data)
-        class_name = class_list[int(create_form.class_name.data[0])][1]
+        class_name = class_list[int(create_form.class_name.data)][1]
         location = location_list[int(create_form.location.data)][1]
         wavelength = wavelength_list[int(create_form.wavelength.data)][1]
         design = design_list[int(create_form.design.data)][1]

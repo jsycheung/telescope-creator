@@ -5,7 +5,7 @@ from lists import class_list, location_list, wavelength_list, design_list, optic
 
 
 class CreateForm(FlaskForm):
-    class_name = SelectMultipleField(
+    class_name = SelectField(
         "Select class: ", choices=class_list, validators=[DataRequired()], coerce=int)
     location = SelectField("Select location: ",
                            choices=location_list, validators=[DataRequired()])

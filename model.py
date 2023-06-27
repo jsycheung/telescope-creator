@@ -2,12 +2,14 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
+
 def connect_to_db(app):
     # Have to run command "source config.sh"
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["POSTGRES_URI"]
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
+
 
 # Run command in postgres
 '''
@@ -24,10 +26,11 @@ CREATE TABLE telescopes (
 );
 '''
 
+
 class Telescope(db.Model):
     __tablename__ = "telescopes"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    telescope_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     class_name = db.Column(db.String(255), nullable=False)
     location = db.Column(db.String(255), nullable=False)
     wavelength = db.Column(db.String(255), nullable=False)
