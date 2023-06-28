@@ -37,6 +37,7 @@ def create_telescope():
         print("Telescope created successfully!")
         return redirect(url_for("home"))
     else:
+        print("Telescope not created")
         return redirect(url_for("home"))
 
 

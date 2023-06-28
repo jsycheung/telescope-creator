@@ -1,5 +1,6 @@
 import os
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.dialects.postgresql import JSON
 db = SQLAlchemy()
 
 
@@ -11,44 +12,34 @@ def connect_to_db(app):
     db.init_app(app)
 
 
-# Run command in postgres
-'''
-CREATE TABLE telescopes (
-    id SERIAL PRIMARY KEY,
-    class_name VARCHAR(255) NOT NULL,
-    location VARCHAR(255) NOT NULL,
-    wavelength VARCHAR(255) NOT NULL,
-    design VARCHAR(255) NOT NULL,
-    optics VARCHAR(255) NOT NULL,
-    fov VARCHAR(255) NOT NULL,
-    instrument VARCHAR(255) NOT NULL,
-    extras VARCHAR(255) NOT NULL
-);
-'''
+class User(db.Model):
+    __tablename__ = "users"
+
+    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), nullable=False)
+    hashed_password = db.Column(db.String(255), nullable=False)
 
 
 class Telescope(db.Model):
     __tablename__ = "telescopes"
 
     telescope_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
     class_name = db.Column(db.String(255), nullable=False)
     location = db.Column(db.String(255), nullable=False)
-    wavelength = db.Column(db.String(255), nullable=False)
+    wavelength = db.Column(JSON, nullable=False)
+    temperature = db.Column(JSON, nullable=False)
     design = db.Column(db.String(255), nullable=False)
     optics = db.Column(db.String(255), nullable=False)
-    fov = db.Column(db.String(255), nullable=False)
-    instrument = db.Column(db.String(255), nullable=False)
-    extras = db.Column(db.String(255), nullable=True)
+    fov = db.Column(JSON, nullable=False)
+    instrument = db.Column(JSON, nullable=False)
+    extras = db.Column(JSON, nullable=True)
 
-    def __init__(self, class_name, location, wavelength, design, optics, fov, instrument, extras):
-        self.class_name = class_name
-        self.location = location
-        self.wavelength = wavelength
-        self.design = design
-        self.optics = optics
-        self.fov = fov
-        self.instrument = instrument
-        self.extras = extras
+    user = db.relationship("User", backref="telescopes")
+
+    def __repr__(self):
+        return f"<Telescope telescope_id={self.telescope_id} user_id={self.user_id}>"
 
 
 if __name__ == "__main__":
@@ -56,3 +47,10 @@ if __name__ == "__main__":
     app = Flask(__name__)
     connect_to_db(app)
     print("Connected to db...")
+
+'''
+To add tables into the database, run 'python -i model.py' in terminal, then run
+'with app.app_context():
+    db.create_all()'
+in interactive mode.
+'''
