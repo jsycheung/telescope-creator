@@ -16,8 +16,8 @@ class User(db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(255), nullable=False)
-    email = db.Column(db.String(255), nullable=False)
+    username = db.Column(db.String(255), nullable=False, unique=True)
+    email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
 
 
@@ -35,6 +35,7 @@ class Telescope(db.Model):
     fov = db.Column(JSON, nullable=False)
     instrument = db.Column(JSON, nullable=False)
     extras = db.Column(JSON, nullable=True)
+    cost = db.Column(db.Integer, nullable=False)
 
     user = db.relationship("User", backref="telescopes")
 
