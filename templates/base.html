@@ -19,6 +19,7 @@
                     <a class="nav-link" href="{{ url_for('home') }}">Create</a>
                     <a class="nav-link" href="{{ url_for('show_summary') }}">Show Summary</a>
                     <a class="nav-link" href="{{ url_for('show_telescopes') }}">My telescopes</a>
+                    <a class="nav-link">Welcome, {{ current_user.username }}!</a>
                 </div>
             </div>
         </div>

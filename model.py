@@ -24,6 +24,9 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return f"<User username={self.username}>"
 
+    def get_id(self):
+        return self.user_id
+
 
 class Telescope(db.Model):
     __tablename__ = "telescopes"
