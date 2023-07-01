@@ -8,5 +8,12 @@
     {{ login_form.password }}
     {{ login_form.submit }}
 </form>
-    
+{% for error in login_form.email.errors %}
+{{ error }}
+{% endfor %}
+{% for error in login_form.password.errors %}
+{{ password }}
+{% endfor %}
+<p>Don't have an account? Sign up <a href="{{url_for('signup')}}">here</a>.</p>
+
 {% endblock %}

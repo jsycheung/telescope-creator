@@ -6,20 +6,20 @@ from lists import class_list, location_list, wavelength_list, temperature_list, 
 
 
 class LoginForm(FlaskForm):
-    email = StringField("Email", validators=[InputRequired(
-        "Field required."), Email("Please enter a valid email.")])
+    email = StringField("Email", validators=[
+                        InputRequired(), Email("Please enter a valid email.")])
     password = PasswordField("Password", validators=[
-                             InputRequired("Field required.")])
+                             InputRequired()])
     submit = SubmitField("Submit")
 
 
 class SignupForm(FlaskForm):
     username = StringField("Username", validators=[
-                           InputRequired("Field required.")])
-    email = StringField("Email", validators=[InputRequired(
-        "Field required."), Email("Please enter a valid email.")])
-    password = PasswordField("Password", validators=[InputRequired(
-        "Field required."), Length(min=8, message="Password must be at least 8 characters long."), EqualTo('confirm_password', message='Passwords must match.')])
+                           InputRequired()])
+    email = StringField("Email", validators=[
+                        InputRequired(), Email("Please enter a valid email.")])
+    password = PasswordField("Password", validators=[InputRequired(), Length(
+        min=8, message="Password must be at least 8 characters long."), EqualTo('confirm_password', message='Passwords must match.')])
     confirm_password = PasswordField("Confirm password")
     submit = SubmitField("Submit")
 
