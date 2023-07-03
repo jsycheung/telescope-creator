@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, flash
 from forms import CreateForm, LoginForm, SignupForm
 from model import db, Telescope, connect_to_db, User
-from lists import class_list, location_list, wavelength_list, design_list, optics_list, fov_list, instrument_list, extras_list
+from lists import class_list, location_list, wavelength_list, temperature_list, design_list, optics_list, fov_list, instrument_list, extras_list, class_list_cost, location_list_cost, wavelength_list_cost, temperature_list_cost, design_list_cost, optics_list_cost, fov_list_cost, instrument_list_cost, extras_list_cost
 from crud import get_user_by_email, get_user_by_username, create_user
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, LoginManager, current_user, logout_user, login_required
@@ -20,14 +20,14 @@ login_manager.login_message_category = "info"
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return db.session.get(User, user_id)
 
 
 @app.route("/")
 @login_required
 def home():
     create_form = CreateForm()
-    return render_template("home.html", create_form=create_form)
+    return render_template("home.html", create_form=create_form, class_list_cost=class_list_cost, location_list_cost=location_list_cost, wavelength_list_cost=wavelength_list_cost, temperature_list_cost=temperature_list_cost, design_list_cost=design_list_cost, optics_list_cost=optics_list_cost, fov_list_cost=fov_list_cost, instrument_list_cost=instrument_list_cost, extras_list_cost=extras_list_cost)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -80,14 +80,20 @@ def create_telescope():
     if create_form.validate_on_submit():
         class_name = class_list[int(create_form.class_name.data)][1]
         location = location_list[int(create_form.location.data)][1]
-        wavelength = wavelength_list[int(create_form.wavelength.data)][1]
+        wavelength = [wavelength_list[i][1]
+                      for i in create_form.wavelength.data]
+        print(wavelength)
+        temperature = [temperature_list[i][1]
+                       for i in create_form.temperature.data]
         design = design_list[int(create_form.design.data)][1]
         optics = optics_list[int(create_form.optics.data)][1]
-        fov = fov_list[int(create_form.fov.data)][1]
-        instrument = instrument_list[int(create_form.instrument.data)][1]
-        extras = extras_list[int(create_form.extras.data)][1]
+        fov = [fov_list[i][1] for i in create_form.fov.data]
+        instrument = [instrument_list[i][1]
+                      for i in create_form.instrument.data]
+        extras = [extras_list[i][1] for i in create_form.extras.data]
+        cost = 100
         new_telescope = Telescope(
-            class_name, location, wavelength, design, optics, fov, instrument, extras)
+            class_name=class_name, location=location, wavelength=wavelength, temperature=temperature, design=design, optics=optics, fov=fov, instrument=instrument, extras=extras, cost=cost, user=current_user)
         db.session.add(new_telescope)
         db.session.commit()
         print("Telescope created successfully!")

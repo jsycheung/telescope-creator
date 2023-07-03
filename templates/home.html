@@ -2,6 +2,10 @@
 {% block body %}
 <div class="form-container">
     <h3>Create Telescope</h3>
+    <p>budget: </p>
+    {% for error in create_form.class_name.errors %}
+    {{ error }}
+    {% endfor %}
     <form action="{{ url_for('create_telescope') }}" method="POST">
         {{ create_form.csrf_token() }}
         {{ create_form.class_name.label }}
@@ -12,6 +16,9 @@
         <br>
         {{ create_form.wavelength.label }}
         {{ create_form.wavelength }}
+        <br>
+        {{ create_form.temperature.label }}
+        {{ create_form.temperature }}
         <br>
         {{ create_form.design.label }}
         {{ create_form.design }}
@@ -31,4 +38,28 @@
         {{ create_form.submit }}
     </form>
 </div>
+<script>
+    const labels_list = ["class_name", "location", "wavelength", "temperature", "design", "optics", "fov", "instrument", "extras"]
+    const class_name_li = document.querySelector("#class_name").getElementsByTagName("li");
+    const class_list_cost = JSON.parse('{{ class_list_cost | tojson }}');
+    const location_list_cost = JSON.parse('{{ location_list_cost | tojson }}');
+    const wavelength_list_cost = JSON.parse('{{ wavelength_list_cost | tojson }}');
+    const temperature_list_cost = JSON.parse('{{ temperature_list_cost | tojson }}');
+    const design_list_cost = JSON.parse('{{ design_list_cost | tojson }}');
+    const optics_cost = JSON.parse('{{ optics_list_cost | tojson }}');
+    const fov_list_cost = JSON.parse('{{ fov_list_cost | tojson }}');
+    const instrument_list_cost = JSON.parse('{{ instrument_list_cost | tojson }}');
+    const extras_list_cost = JSON.parse('{{ extras_list_cost | tojson }}');
+    const cost_lists = [class_list_cost, location_list_cost, wavelength_list_cost, temperature_list_cost, design_list_cost, optics_cost, fov_list_cost, instrument_list_cost, extras_list_cost]
+    cost_lists.forEach((cost_list, index) => {
+        const li_list = document.querySelector(`#${labels_list[index]}`).getElementsByTagName("li");
+        for (let i = 0; i < cost_list.length; i++) {
+            const span = document.createElement("span");
+            li_list[i].appendChild(span);
+            text = cost_list[i];
+            span.textContent = text;
+}
+    });
+    
+</script>
 {% endblock %}

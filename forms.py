@@ -26,21 +26,21 @@ class SignupForm(FlaskForm):
 
 class CreateForm(FlaskForm):
     class_name = RadioField(
-        "Select class: ", choices=class_list, validators=[InputRequired()])
+        "Select class: ", choices=class_list, validators=[InputRequired()], coerce=int)
     location = RadioField("Select location: ",
-                          choices=location_list, validators=[InputRequired()])
+                          choices=location_list, coerce=int)
     wavelength = MultiCheckboxField("Select wavelength range: ",
-                                    choices=wavelength_list, validators=[InputRequired()])
+                                    choices=wavelength_list, validators=[InputRequired()], coerce=int)
     temperature = MultiCheckboxField(
-        "Select operating temperature: ", choices=temperature_list, validators=[InputRequired()])
+        "Select operating temperature: ", choices=temperature_list, validators=[InputRequired()], coerce=int)
     design = RadioField(
-        "Select design: ", choices=design_list, validators=[InputRequired()])
+        "Select design: ", choices=design_list, validators=[InputRequired()], coerce=int)
     optics = RadioField(
-        "Select optics: ", choices=optics_list, validators=[InputRequired()])
+        "Select optics: ", choices=optics_list, validators=[InputRequired()], coerce=int)
     fov = MultiCheckboxField("Select field of view: ",
-                             choices=fov_list, validators=[InputRequired()])
+                             choices=fov_list, validators=[InputRequired()], coerce=int)
     instrument = MultiCheckboxField(
-        "Select instrument: ", choices=instrument_list, validators=[InputRequired()])
+        "Select instrument: ", choices=instrument_list, validators=[InputRequired()], coerce=int)
     extras = MultiCheckboxField("Select add-ons: ",
-                                choices=extras_list, validators=[InputRequired()])
+                                choices=extras_list, coerce=int)
     submit = SubmitField("Submit")
