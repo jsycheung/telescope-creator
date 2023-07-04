@@ -5,9 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create your own telescope</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-    <link href="static/base.css" type="text/css" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous"> -->
+    <link href="static/css/base.css" type="text/css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
@@ -17,16 +19,27 @@
             <div class="collapse navbar-collapse">
                 <div class="navbar-nav">
                     <a class="nav-link" href="{{ url_for('home') }}">Create</a>
-                    <a class="nav-link" href="{{ url_for('show_summary') }}">Show Summary</a>
-                    <a class="nav-link" href="{{ url_for('show_telescopes') }}">My telescopes</a>
+                    <a class="nav-link" href="{{ url_for('inventory') }}">Inventory</a>
                     <a class="nav-link">Welcome, {{ current_user.username }}!</a>
+                    <a class="nav-link" href="{{ url_for('logout') }}">Log out</a>
                 </div>
             </div>
         </div>
     </nav>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     {% block body %}
         BODY OF PAGE GOES HERE VIA INHERITANCE
     {% endblock %}
+
 
 </body>
 </html>

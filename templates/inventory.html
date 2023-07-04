@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block body %}
+{% for telescope in telescopes %}
+<div class="telescope-container">
+    Name: {{ telescope.telescope_name }}
+    Class: {{ telescope.class_name }}
+    Location: {{ telescope.location }}
+    Wavelength: {{ ', '.join(telescope.wavelength) }}
+    Temperature: {{ ', '.join(telescope.temperature) }}
+    Design: {{ telescope.design }}
+    Optics: {{ telescope.optics }}
+    Fov: {{ ', '.join(telescope.fov) }}
+    Instrument: {{ ', '.join(telescope.instrument) }}
+    Extras: {{ ', '.join(telescope.extras) }}
+    Cost: {{ telescope.cost }}
+    <a class="delete-btns" id="delete-btn-{{telescope.telescope_id}}" href="{{ url_for('delete',telescope_id=telescope.telescope_id) }}" onclick="return confirm('Do you wish to delete telescope {{ telescope.telescope_name }}?')">Delete</a>
+    <a class="edit-btns" id="edit-btn-{{telescope.telescope_id}}" href="{{ url_for('edit',telescope_id=telescope.telescope_id) }}">Edit</a>
+</div>
+{% endfor %}
+{% endblock %}

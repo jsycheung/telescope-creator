@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="form-container">
+    <h3>Edit Telescope</h3>
+    Class: <span id="class-identifier"></span>
+    Budget: <span id="budget"></span>
+    Cost: <span id="cost">0</span>
+    Remaining budget: <span id="remaining-budget"></span>
+    <form action="{{ url_for('edit', telescope_id=current_telescope.telescope_id) }}" method="POST">
+        
+        {{ edit_form.csrf_token() }}
+        {{ edit_form.cost_value }}
+        {{ edit_form.submit }}
+        {{ edit_form.telescope_name.label }}
+        {{ edit_form.telescope_name }}
+        <br>
+        {{ edit_form.class_name.label }}
+        {{ edit_form.class_name }}
+        <br>
+        {{ edit_form.location.label }}
+        {{ edit_form.location }}
+        <br>
+        {{ edit_form.wavelength.label }}
+        {{ edit_form.wavelength }}
+        <br>
+        {{ edit_form.temperature.label }}
+        {{ edit_form.temperature }}
+        <br>
+        {{ edit_form.design.label }}
+        {{ edit_form.design }}
+        <br>
+        {{ edit_form.optics.label }}
+        {{ edit_form.optics }}
+        <br>
+        {{ edit_form.fov.label }}
+        {{ edit_form.fov }}
+        <br>
+        {{ edit_form.instrument.label }}
+        {{ edit_form.instrument }}
+        <br>
+        {{ edit_form.extras.label }}
+        {{ edit_form.extras }}
+        <br>
+        
+    </form>
+</div>
+<script>
+    const labels_list = ["class_name", "location", "wavelength", "temperature", "design", "optics", "fov", "instrument", "extras"]
+    const class_name_ul = document.querySelector("#class_name")
+    const class_name_li = class_name_ul.getElementsByTagName("li");
+    const class_list = JSON.parse('{{ class_list | tojson }}');
+    const class_list_cost = JSON.parse('{{ class_list_cost | tojson }}');
+    const location_list_cost = JSON.parse('{{ location_list_cost | tojson }}');
+    const wavelength_list_cost = JSON.parse('{{ wavelength_list_cost | tojson }}');
+    const temperature_list_cost = JSON.parse('{{ temperature_list_cost | tojson }}');
+    const design_list_cost = JSON.parse('{{ design_list_cost | tojson }}');
+    const optics_cost = JSON.parse('{{ optics_list_cost | tojson }}');
+    const fov_list_cost = JSON.parse('{{ fov_list_cost | tojson }}');
+    const instrument_list_cost = JSON.parse('{{ instrument_list_cost | tojson }}');
+    const extras_list_cost = JSON.parse('{{ extras_list_cost | tojson }}');
+    const cost_lists = [class_list_cost, location_list_cost, wavelength_list_cost, temperature_list_cost, design_list_cost, optics_cost, fov_list_cost, instrument_list_cost, extras_list_cost]
+    const budget = document.querySelector("#budget")
+    const class_identifier = document.querySelector("#class-identifier")
+    const cost = document.querySelector("#cost")
+    const cost_value = document.querySelector("#cost_value")
+    const remaining_budget = document.querySelector("#remaining-budget")
+    const wavelength_checkboxes = document.getElementsByName("wavelength")
+    const wavelength_ul = document.querySelector("#wavelength")
+    const temperature_checkboxes = document.getElementsByName("temperature")
+    const temperature_ul = document.querySelector("#temperature")
+    const fov_checkboxes = document.getElementsByName("fov")
+    const fov_ul = document.querySelector("#fov")
+    const instrument_checkboxes = document.getElementsByName("instrument")
+    const instrument_ul = document.querySelector("#instrument")
+    const checkboxes = [wavelength_checkboxes, temperature_checkboxes, fov_checkboxes, instrument_checkboxes]
+    const ul_list = [wavelength_ul, temperature_ul, fov_ul, instrument_ul]
+
+    
+    ul_list.forEach((item, index) => {
+        item.onclick = () => {
+        var checked_count = 0
+            for (i = 0; i < checkboxes[index].length; i++) {
+                if (checkboxes[index][i].checked) {
+                    checked_count += 1
+                    checkboxes[index].forEach(checkbox => checkbox.removeAttribute("required"))
+                }
+            }
+            if (checked_count == 0) {
+                checkboxes[index].forEach(checkbox => checkbox.required = true)
+            }
+            checked_count = 0
+    }
+    })
+
+    // add cost and budget
+    cost_lists.forEach((cost_list, index) => {
+        const li_list = document.querySelector(`#${labels_list[index]}`).getElementsByTagName("li");
+        for (let i = 0; i < cost_list.length; i++) {
+            const span = document.createElement("span");
+            li_list[i].appendChild(span);
+            text = cost_list[i];
+            if (cost_list == class_list_cost) {
+                span.textContent = text;
+            } else {
+                span.textContent = -text;
+            }
+    }
+    });
+
+    // change budget based on selected class
+    function update_budget() {
+        Array.from(class_name_li).forEach((li, index) => {
+        if (li.getElementsByTagName("input")[0].checked) {
+            budget.textContent = String(class_list_cost[index]);
+            class_identifier.textContent = class_list[parseInt(li.getElementsByTagName("input")[0].getAttribute("value"))][1];
+    }})};
+    const li_list_except_class = [...document.getElementsByTagName("li")].slice(class_name_li.length);
+    function update_cost() {
+        cost_sum = 0
+                Array.from(li_list_except_class).forEach((li, index) => {
+                    if (li.getElementsByTagName("input")[0].checked) {
+                        cost_list_index = labels_list.indexOf(li.parentNode.getAttribute("id"));
+                        const subcost = cost_lists[cost_list_index][parseInt(li.getElementsByTagName("input")[0].getAttribute("value"))]
+                        cost_sum += subcost
+                    }
+                })
+                cost.textContent = String(cost_sum)
+                remaining_budget.textContent = String(parseInt(budget.textContent)-cost_sum)
+                cost_value.setAttribute("value", cost_sum)
+    }
+
+    window.onload = function() {
+        update_budget();
+        update_cost();
+        ul_list.forEach((item, index) => {
+            var checked_count = 0
+            for (i = 0; i < checkboxes[index].length; i++) {
+                if (checkboxes[index][i].checked) {
+                    checked_count += 1
+                    checkboxes[index].forEach(checkbox => checkbox.removeAttribute("required"))
+                }
+            }
+            if (checked_count == 0) {
+                checkboxes[index].forEach(checkbox => checkbox.required = true)
+            }
+            checked_count = 0
+        })
+    };
+    class_name_ul.onclick = () => {
+        update_budget();
+        update_cost();
+    };
+
+    for (let i = 0; i < li_list_except_class.length; i++) {
+        li_list_except_class[i].onclick = update_cost;
+        }
+
+</script>
+{% endblock %}

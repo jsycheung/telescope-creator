@@ -1,8 +1,8 @@
-from flask import Flask, render_template, redirect, url_for, flash
-from forms import CreateForm, LoginForm, SignupForm
+from flask import Flask, render_template, redirect, url_for, flash, request
+from forms import CreateForm, LoginForm, SignupForm, EditForm
 from model import db, Telescope, connect_to_db, User
 from lists import class_list, location_list, wavelength_list, temperature_list, design_list, optics_list, fov_list, instrument_list, extras_list, class_list_cost, location_list_cost, wavelength_list_cost, temperature_list_cost, design_list_cost, optics_list_cost, fov_list_cost, instrument_list_cost, extras_list_cost
-from crud import get_user_by_email, get_user_by_username, create_user
+from crud import get_user_by_email, get_user_by_username, create_user, crud_create_telescope, get_telescope_by_id
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, LoginManager, current_user, logout_user, login_required
 
@@ -27,7 +27,15 @@ def load_user(user_id):
 @login_required
 def home():
     create_form = CreateForm()
-    return render_template("home.html", create_form=create_form, class_list_cost=class_list_cost, location_list_cost=location_list_cost, wavelength_list_cost=wavelength_list_cost, temperature_list_cost=temperature_list_cost, design_list_cost=design_list_cost, optics_list_cost=optics_list_cost, fov_list_cost=fov_list_cost, instrument_list_cost=instrument_list_cost, extras_list_cost=extras_list_cost)
+    return render_template("home.html", create_form=create_form, class_list=class_list, class_list_cost=class_list_cost, location_list_cost=location_list_cost, wavelength_list_cost=wavelength_list_cost, temperature_list_cost=temperature_list_cost, design_list_cost=design_list_cost, optics_list_cost=optics_list_cost, fov_list_cost=fov_list_cost, instrument_list_cost=instrument_list_cost, extras_list_cost=extras_list_cost)
+
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("You have logged out successfully!")
+    return redirect(url_for("login"))
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -75,14 +83,15 @@ def signup():
 
 
 @app.route("/create-telescope", methods=["POST"])
+@login_required
 def create_telescope():
     create_form = CreateForm()
     if create_form.validate_on_submit():
+        telescope_name = create_form.telescope_name.data
         class_name = class_list[int(create_form.class_name.data)][1]
         location = location_list[int(create_form.location.data)][1]
         wavelength = [wavelength_list[i][1]
                       for i in create_form.wavelength.data]
-        print(wavelength)
         temperature = [temperature_list[i][1]
                        for i in create_form.temperature.data]
         design = design_list[int(create_form.design.data)][1]
@@ -91,27 +100,98 @@ def create_telescope():
         instrument = [instrument_list[i][1]
                       for i in create_form.instrument.data]
         extras = [extras_list[i][1] for i in create_form.extras.data]
-        cost = 100
-        new_telescope = Telescope(
-            class_name=class_name, location=location, wavelength=wavelength, temperature=temperature, design=design, optics=optics, fov=fov, instrument=instrument, extras=extras, cost=cost, user=current_user)
+        cost = int(create_form.cost_value.data)
+        if cost > class_list_cost[int(create_form.class_name.data)]:
+            flash("Your budget is exceeded, telescope cannot be created.", "danger")
+            return redirect(url_for("home"))
+        new_telescope = crud_create_telescope(telescope_name, class_name, location, wavelength, temperature,
+                                              design, optics, fov, instrument, extras, cost, current_user)
         db.session.add(new_telescope)
         db.session.commit()
-        print("Telescope created successfully!")
+        flash("Telescope created successfully!", "success")
         return redirect(url_for("home"))
     else:
-        print("Telescope not created")
+        flash("Telescope not created", "danger")
         return redirect(url_for("home"))
 
 
-@app.route("/summary")
-def show_summary():
-    pass
+@app.route("/edit/<int:telescope_id>", methods=["GET", "POST"])
+@login_required
+def edit(telescope_id):
+    current_telescope = get_telescope_by_id(telescope_id)
+    if current_user != current_telescope.user:
+        flash("Sorry, you don't have access to this telescope.", "danger")
+        return redirect(url_for("inventory"))
+    edit_form = EditForm()
+
+    # Have to make sure the validate_on_submit block come first, otherwise if we make a post request, the new data will be overwritten by the existing one.
+    if edit_form.validate_on_submit():
+        current_telescope.telescope_name = edit_form.telescope_name.data
+        print(edit_form.telescope_name.data)
+        current_telescope.class_name = class_list[int(
+            edit_form.class_name.data)][1]
+        current_telescope.location = location_list[int(
+            edit_form.location.data)][1]
+        current_telescope.wavelength = [wavelength_list[i][1]
+                                        for i in edit_form.wavelength.data]
+        current_telescope.temperature = [temperature_list[i][1]
+                                         for i in edit_form.temperature.data]
+        current_telescope.design = design_list[int(edit_form.design.data)][1]
+        current_telescope.optics = optics_list[int(edit_form.optics.data)][1]
+        current_telescope.fov = [fov_list[i][1] for i in edit_form.fov.data]
+        current_telescope.instrument = [instrument_list[i][1]
+                                        for i in edit_form.instrument.data]
+        current_telescope.extras = [extras_list[i][1]
+                                    for i in edit_form.extras.data]
+        current_telescope.cost = int(edit_form.cost_value.data)
+        if current_telescope.cost > class_list_cost[int(edit_form.class_name.data)]:
+            flash("Your budget is exceeded, telescope cannot be updated.", "danger")
+            return redirect(url_for("edit", telescope_id=current_telescope.telescope_id))
+        db.session.merge(current_telescope)
+        db.session.commit()
+        flash(
+            f"Telescope {current_telescope.telescope_name} updated!", "success")
+        return redirect(url_for("inventory"))
+    edit_form.telescope_name.data = current_telescope.telescope_name
+    edit_form.class_name.data = [item[1] for item in class_list].index(
+        current_telescope.class_name)
+    edit_form.location.data = [item[1] for item in location_list].index(
+        current_telescope.location)
+    edit_form.wavelength.data = [[item[1] for item in wavelength_list].index(
+        wavelength_item) for wavelength_item in current_telescope.wavelength]
+    edit_form.temperature.data = [[item[1] for item in temperature_list].index(
+        temperature_item) for temperature_item in current_telescope.temperature]
+    edit_form.design.data = [item[1] for item in design_list].index(
+        current_telescope.design)
+    edit_form.optics.data = [item[1] for item in optics_list].index(
+        current_telescope.optics)
+    edit_form.fov.data = [[item[1] for item in fov_list].index(
+        fov_item) for fov_item in current_telescope.fov]
+    edit_form.instrument.data = [[item[1] for item in instrument_list].index(
+        instrument_item) for instrument_item in current_telescope.instrument]
+    edit_form.extras.data = [[item[1] for item in extras_list].index(
+        extras_item) for extras_item in current_telescope.extras]
+
+    return render_template("edit.html", edit_form=edit_form, current_telescope=current_telescope, class_list=class_list, class_list_cost=class_list_cost, location_list_cost=location_list_cost, wavelength_list_cost=wavelength_list_cost, temperature_list_cost=temperature_list_cost, design_list_cost=design_list_cost, optics_list_cost=optics_list_cost, fov_list_cost=fov_list_cost, instrument_list_cost=instrument_list_cost, extras_list_cost=extras_list_cost)
 
 
-@app.route("/telescopes")
-def show_telescopes():
-    telescopes = Telescope.query.all()  # List of objects
-    return render_template("telescopes.html", telescopes=telescopes)
+@app.route("/inventory")
+@login_required
+def inventory():
+    telescopes = Telescope.query.filter_by(
+        user=current_user)  # List of objects
+    return render_template("inventory.html", telescopes=telescopes)
+
+
+@app.route("/delete/<int:telescope_id>")
+@login_required
+def delete(telescope_id):
+    telescope = get_telescope_by_id(telescope_id)
+    db.session.delete(telescope)
+    db.session.commit()
+    flash(
+        f"Telescope {telescope.telescope_name} deleted successfully!", "success")
+    return redirect(url_for("inventory"))
 
 
 if __name__ == "__main__":
