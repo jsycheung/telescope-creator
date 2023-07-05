@@ -35,12 +35,6 @@ body {
   z-index: 1;
 }
 
-label {
-  display: block !important;
-  margin-top: 15px;
-  font-weight: 700;
-}
-
 form {
   width: 100%;
 }
@@ -51,6 +45,12 @@ input {
   border-radius: 8px;
   border: 0;
   background-color: #d9d9d9;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 700;
 }
 
 #submit {
@@ -88,4 +88,14 @@ input {
 a:link,
 a:visited {
   color: #1a1831;
+}
+
+.alert-successful {
+  background-color: #1a1831 !important;
+  color: white !important;
+}
+
+.alert-dangerous {
+  background-color: #5f0b0b !important;
+  color: white !important;
 }

@@ -24,31 +24,31 @@
                 {% for category, message in messages %}
                     <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
                     {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
         {% if login_form %}
         {% for error in login_form.email.errors %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-dangerous alert-dismissible fade show" role="alert">
         {{ error }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         {% endfor %}
         {% endif %}
 
         {% if signup_form %}
         {% for error in signup_form.email.errors %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-dangerous alert-dismissible fade show" role="alert">
         {{ error }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         {% endfor %}
         {% for error in signup_form.password.errors %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-dangerous alert-dismissible fade show" role="alert">
             {{ error }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         {% endfor %}
         {% endif %}

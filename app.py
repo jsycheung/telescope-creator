@@ -34,7 +34,7 @@ def home():
 @login_required
 def logout():
     logout_user()
-    flash("You have logged out successfully!", "success")
+    flash("You have logged out successfully!", "successful")
     return redirect(url_for("login"))
 
 
@@ -50,9 +50,9 @@ def login():
                 login_user(user)
                 return redirect(url_for("home"))
             else:
-                flash("Wrong password.", "danger")
+                flash("Wrong password.", "dangerous")
         else:
-            flash("Email is not registered.", "danger")
+            flash("Email is not registered.", "dangerous")
     return render_template("login.html", login_form=login_form)
 
 
@@ -63,16 +63,16 @@ def signup():
         username = signup_form.username.data
         email = signup_form.email.data
         if get_user_by_email(email):
-            flash("Email already registered. Please log in.", "danger")
+            flash("Email already registered. Please log in.", "dangerous")
         elif get_user_by_username(username):
-            flash("Username is used. Please select a new username.", "danger")
+            flash("Username is used. Please select a new username.", "dangerous")
         else:
             hashed_password = bcrypt.generate_password_hash(
                 signup_form.password.data).decode('utf-8')
             user = create_user(username, email, hashed_password)
             db.session.add(user)
             db.session.commit()
-            flash("Account successfully created. Please log in.", "success")
+            flash("Account successfully created. Please log in.", "successful")
             return redirect(url_for("login"))
     return render_template("signup.html", signup_form=signup_form)
 
@@ -102,16 +102,16 @@ def create_telescope():
         extras = [extras_list[i][1] for i in create_form.extras.data]
         cost = int(create_form.cost_value.data)
         if cost > class_list_cost[int(create_form.class_name.data)]:
-            flash("Your budget is exceeded, telescope cannot be created.", "danger")
+            flash("Your budget is exceeded, telescope cannot be created.", "dangerous")
             return redirect(url_for("home"))
         new_telescope = crud_create_telescope(telescope_name, class_name, location, wavelength, temperature,
                                               design, optics, fov, instrument, extras, cost, current_user)
         db.session.add(new_telescope)
         db.session.commit()
-        flash("Telescope created successfully!", "success")
+        flash("Telescope created successfully!", "successful")
         return redirect(url_for("home"))
     else:
-        flash("Telescope not created", "danger")
+        flash("Telescope not created", "dangerous")
         return redirect(url_for("home"))
 
 
@@ -120,7 +120,7 @@ def create_telescope():
 def edit(telescope_id):
     current_telescope = get_telescope_by_id(telescope_id)
     if current_user != current_telescope.user:
-        flash("Sorry, you don't have access to this telescope.", "danger")
+        flash("Sorry, you don't have access to this telescope.", "dangerous")
         return redirect(url_for("inventory"))
     edit_form = EditForm()
 
@@ -145,12 +145,12 @@ def edit(telescope_id):
                                     for i in edit_form.extras.data]
         current_telescope.cost = int(edit_form.cost_value.data)
         if current_telescope.cost > class_list_cost[int(edit_form.class_name.data)]:
-            flash("Your budget is exceeded, telescope cannot be updated.", "danger")
+            flash("Your budget is exceeded, telescope cannot be updated.", "dangerous")
             return redirect(url_for("edit", telescope_id=current_telescope.telescope_id))
         db.session.merge(current_telescope)
         db.session.commit()
         flash(
-            f"Telescope {current_telescope.telescope_name} updated!", "success")
+            f"Telescope {current_telescope.telescope_name} updated!", "successful")
         return redirect(url_for("inventory"))
     edit_form.telescope_name.data = current_telescope.telescope_name
     edit_form.class_name.data = [item[1] for item in class_list].index(
@@ -190,7 +190,7 @@ def delete(telescope_id):
     db.session.delete(telescope)
     db.session.commit()
     flash(
-        f"Telescope {telescope.telescope_name} deleted successfully!", "success")
+        f"Telescope {telescope.telescope_name} deleted successfully!", "successful")
     return redirect(url_for("inventory"))
 
 
