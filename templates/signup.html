@@ -1,5 +1,7 @@
 {% extends "account_base.html" %}
 {% block body %}
+<h2>Welcome!</h2>
+<h5>Please create an account.</h5>
 <form action="{{ url_for('signup') }}" method="POST">
     {{ signup_form.csrf_token }}
     {{ signup_form.username.label }}
@@ -12,15 +14,6 @@
     {{ signup_form.confirm_password }}
     {{ signup_form.submit }}
 </form>
-<p>Already have an account? Log in <a href="{{url_for('login')}}">here</a>.</p>
-{% for error in signup_form.username.errors %}
-{{ error }}
-{% endfor %}
-{% for error in signup_form.email.errors %}
-{{ error }}
-{% endfor %}
-{% for error in signup_form.password.errors %}
-{{ error }}
-{% endfor %}
+<p id="login-text">Already have an account? Log in <a href="{{url_for('login')}}">here</a>.</p>
 
 {% endblock %}

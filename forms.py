@@ -10,7 +10,7 @@ class LoginForm(FlaskForm):
                         InputRequired(), Email("Please enter a valid email.")])
     password = PasswordField("Password", validators=[
                              InputRequired()])
-    submit = SubmitField("Submit")
+    submit = SubmitField("Sign In")
 
 
 class SignupForm(FlaskForm):
@@ -18,10 +18,10 @@ class SignupForm(FlaskForm):
                            InputRequired()])
     email = StringField("Email", validators=[
                         InputRequired(), Email("Please enter a valid email.")])
-    password = PasswordField("Password", validators=[InputRequired(), Length(
+    password = PasswordField("Password (at least 8 characters long)", validators=[InputRequired(), Length(
         min=8, message="Password must be at least 8 characters long."), EqualTo('confirm_password', message='Passwords must match.')])
     confirm_password = PasswordField("Confirm password")
-    submit = SubmitField("Submit")
+    submit = SubmitField("Sign Up")
 
 
 class CreateForm(FlaskForm):

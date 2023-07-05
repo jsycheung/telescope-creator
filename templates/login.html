@@ -1,5 +1,7 @@
 {% extends "account_base.html" %}
 {% block body %}
+<h2>Welcome!</h2>
+<h5>To create your telescope, please sign in.</h5>
 <form action="{{ url_for('login') }}" method="POST">
     {{ login_form.csrf_token }}
     {{ login_form.email.label }}
@@ -8,12 +10,7 @@
     {{ login_form.password }}
     {{ login_form.submit }}
 </form>
-{% for error in login_form.email.errors %}
-{{ error }}
-{% endfor %}
-{% for error in login_form.password.errors %}
-{{ password }}
-{% endfor %}
-<p>Don't have an account? Sign up <a href="{{url_for('signup')}}">here</a>.</p>
+
+<p id="signup-text">Don't have an account? Sign up <a href="{{url_for('signup')}}">here</a>.</p>
 
 {% endblock %}
