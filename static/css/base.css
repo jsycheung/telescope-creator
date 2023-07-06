@@ -1,0 +1,38 @@
+* {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+}
+
+nav.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.bg-blue {
+  background-color: #1a1831;
+}
+
+.bg-black {
+  background-color: black;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: white;
+}
+
+.nav-link:hover {
+  font-weight: 700;
+}
+
+.nav-left {
+  margin-left: 35px;
+}
+
+.nav-right {
+  margin-right: 35px;
+}
+
+#show-user:hover {
+  font-weight: 400;
+}

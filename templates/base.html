@@ -13,19 +13,26 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Create your own telescope!</a>
-            <div class="collapse navbar-collapse">
-                <div class="navbar-nav">
-                    <a class="nav-link" href="{{ url_for('home') }}">Create</a>
-                    <a class="nav-link" href="{{ url_for('inventory') }}">Inventory</a>
-                    <a class="nav-link">Welcome, {{ current_user.username }}!</a>
-                    <a class="nav-link" href="{{ url_for('logout') }}">Log out</a>
-                </div>
-            </div>
+    <nav class="navbar navbar-dark bg-blue">
+        <div class="navbar-nav flex-row">
+            <a class="nav-link nav-left" href="{{ url_for('home') }}">Create</a>
+            <a class="nav-link nav-left" href="{{ url_for('inventory') }}">Inventory</a>
+        </div>
+        <div class="navbar-nav flex-row">
+            <a class="nav-link nav-right" id="show-user">Welcome, {{ current_user.username }}!</a>
+            <a class="nav-link nav-right" href="{{ url_for('logout') }}">Log out</a>
         </div>
     </nav>
+    <div class="navbar navbar-dark bg-black">
+        <div class="navbar-nav flex-row">
+            <ul>
+                <li>Class: <span></span></li>
+                <li>Budget: <span></span></li>
+                <li>Cost: <span></span></li>
+                <li>Remaining budget: <span></span></li>
+            </ul>
+        </div>
+    </div>
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
