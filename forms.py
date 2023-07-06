@@ -27,7 +27,7 @@ class SignupForm(FlaskForm):
 class CreateForm(FlaskForm):
     cost_value = HiddenField("cost-value")
     telescope_name = StringField(
-        "Telescope name: ", validators=[InputRequired()])
+        "Telescope name", validators=[InputRequired()])
     class_name = RadioField(
         "Select class: ", choices=class_list, coerce=int, validators=[InputRequired()])
     location = RadioField("Select location: ",

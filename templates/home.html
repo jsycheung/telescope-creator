@@ -1,18 +1,17 @@
 {% extends "base.html" %}
 {% block body %}
-<div class="form-container">
-    <h3>Create Telescope</h3>
-    Class: <span id="class-identifier"></span>
-    Budget: <span id="budget"></span>
-    Cost: <span id="cost">0</span>
-    Remaining budget: <span id="remaining-budget"></span>
-    <form action="{{ url_for('create_telescope') }}" method="POST">
+<div class="container">
+  <div class="small-container">
+    <h3>Design your own space telescope!</h3>
+    <p>Each proposed telescope has an estimated cost, which is the total cost of all the components of the telescope. Depending on the class of the mission, you will have different amount of budget. Make sure the cost of your telescope does not exceed your budget!</p>
+  </div>
+    <form id="create-form" action="{{ url_for('create_telescope') }}" method="POST">
         
         {{ create_form.csrf_token() }}
         {{ create_form.cost_value }}
-        {{ create_form.submit }}
-        {{ create_form.telescope_name.label }}
-        {{ create_form.telescope_name }}
+        <div class="small-container">
+          {{ create_form.telescope_name.label }} <span id="telescope-span">{{ create_form.telescope_name }}</span>
+        </div>
         <br>
         {{ create_form.class_name.label }}
         {{ create_form.class_name }}
@@ -40,8 +39,7 @@
         <br>
         {{ create_form.extras.label }}
         {{ create_form.extras }}
-        <br>
-        
+        <br> 
     </form>
 </div>
 
@@ -150,7 +148,7 @@ function update_budget() {
     }
   });
 }
-const li_list_except_class = [...document.getElementsByTagName("li")].slice(
+const li_list_except_class = [...document.querySelector("form").getElementsByTagName("li")].slice(
   class_name_li.length
 );
 

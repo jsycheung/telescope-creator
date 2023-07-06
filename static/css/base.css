@@ -1,5 +1,24 @@
 * {
   font-family: "Roboto", sans-serif;
+
+  color: #1a1831;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-image: url("../img/login_background.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.navbar {
   font-weight: 400;
 }
 
@@ -17,11 +36,15 @@ nav.navbar {
   background-color: black;
 }
 
+.navbar span {
+  color: white;
+}
+
 .navbar-dark .navbar-nav .nav-link {
   color: white;
 }
 
-.nav-link:hover {
+a.nav-link:hover {
   font-weight: 700;
 }
 
@@ -35,4 +58,61 @@ nav.navbar {
 
 #show-user:hover {
   font-weight: 400;
+}
+
+.navbar-nav ul {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  color: white;
+  margin: auto;
+  padding: 0;
+}
+
+.navbar-nav li {
+  margin-left: 35px;
+}
+
+#submit {
+  border-radius: 8px;
+  border: 0;
+  color: white;
+  background-color: #1a1831;
+  font-weight: 400;
+  width: 300px;
+  margin-right: 35px;
+  padding: 4px;
+  font-size: 20px;
+}
+
+#submit:hover {
+  background-color: #211d54;
+  transition-duration: 200ms;
+}
+
+.small-container {
+  background-color: rgba(217, 217, 217, 0.8);
+  border-radius: 40px;
+  margin-top: 20px;
+  padding: 20px;
+  display: table;
+  width: 100%;
+}
+
+p {
+  margin: 0 !important;
+}
+
+input[type="text"] {
+  width: 50%;
+}
+
+label {
+  display: table-cell;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+#telescope-span {
+  display: table-cell;
 }

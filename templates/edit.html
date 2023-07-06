@@ -2,10 +2,6 @@
 {% block body %}
 <div class="form-container">
     <h3>Edit Telescope</h3>
-    Class: <span id="class-identifier"></span>
-    Budget: <span id="budget"></span>
-    Cost: <span id="cost">0</span>
-    Remaining budget: <span id="remaining-budget"></span>
     <form action="{{ url_for('edit', telescope_id=current_telescope.telescope_id) }}" method="POST">
         
         {{ edit_form.csrf_token() }}
@@ -114,7 +110,7 @@
             budget.textContent = String(class_list_cost[index]);
             class_identifier.textContent = class_list[parseInt(li.getElementsByTagName("input")[0].getAttribute("value"))][1];
     }})};
-    const li_list_except_class = [...document.getElementsByTagName("li")].slice(class_name_li.length);
+    const li_list_except_class = [...document.querySelector("form").getElementsByTagName("li")].slice(class_name_li.length);
     function update_cost() {
         cost_sum = 0
                 Array.from(li_list_except_class).forEach((li, index) => {

@@ -64,6 +64,7 @@ label {
 
 #submit:hover {
   background-color: #211d54;
+  transition-duration: 200ms;
 }
 
 #signup-text {
