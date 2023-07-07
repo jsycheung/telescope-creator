@@ -11,6 +11,7 @@
 </head>
 
 <body>
+    <div class="bignav">
     <nav class="navbar navbar-dark bg-blue">
         <div class="navbar-nav flex-row">
             <a class="nav-link nav-left" href="{{ url_for('home') }}">Create</a>
@@ -32,8 +33,10 @@
         </div> 
         {% if create_form %}
         <input id="submit" type="submit" form="create-form" value="Create my telescope!">
+        {% elif edit_form %}
+        <input id="submit" type="submit" form="edit-form" value="Update my telescope!">
         {% endif %}
-    </div>
+    </div></div>
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}

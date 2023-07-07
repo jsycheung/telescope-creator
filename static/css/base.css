@@ -9,23 +9,29 @@ body {
   height: 100%;
   width: 100%;
   margin: 0;
-  padding: 0;
+  padding: 0 0 20px 0;
 }
 
 body {
   background-image: url("../img/login_background.png");
   background-repeat: no-repeat;
   background-attachment: fixed;
-}
-
-.navbar {
-  font-weight: 400;
+  background-size: cover;
+  height: auto;
+  /* height auto to help navbar stick */
 }
 
 nav.navbar {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.bignav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
 }
 
 .bg-blue {
@@ -94,8 +100,9 @@ a.nav-link:hover {
   background-color: rgba(217, 217, 217, 0.8);
   border-radius: 40px;
   margin-top: 20px;
-  padding: 20px;
-  display: table;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
   width: 100%;
 }
 
@@ -104,15 +111,95 @@ p {
 }
 
 input[type="text"] {
-  width: 50%;
+  width: 100%;
+  padding: 5px;
+  border-radius: 8px;
+  border: 0;
+  background-color: #d9d9d9;
+  margin-top: 4px;
+}
+
+h3 {
+  font-weight: 700 !important;
+  font-size: 26px !important;
 }
 
 label {
-  display: table-cell;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 700;
 }
 
-#telescope-span {
-  display: table-cell;
+.cards-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.card ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+.card input {
+  display: none;
+}
+
+.card {
+  display: inline-block;
+  background-color: rgba(217, 217, 217, 0.8) !important;
+  display: flex;
+  flex-direction: column;
+  border-radius: 40px !important;
+  margin-top: 20px;
+  padding: 25px;
+  width: 400px;
+}
+
+.card li {
+  background-color: #d9d9d9;
+  margin-top: 20px;
+  padding: 1em;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card label {
+  width: 80%;
+}
+
+.card span,
+ul label {
+  color: #1a1831;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.card li:hover {
+  background-color: #1a1831;
+  cursor: pointer;
+}
+
+.card label:hover {
+  cursor: pointer;
+}
+
+.card li:hover label,
+.card li:hover span {
+  color: white;
+}
+
+.card li:has(> input:checked) {
+  background-color: #1a1831;
+}
+
+.card li:has(> input:checked) label,
+.card li:has(> input:checked) span {
+  color: white;
 }

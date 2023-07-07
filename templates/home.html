@@ -1,45 +1,55 @@
 {% extends "base.html" %}
 {% block body %}
 <div class="container">
-  <div class="small-container">
-    <h3>Design your own space telescope!</h3>
-    <p>Each proposed telescope has an estimated cost, which is the total cost of all the components of the telescope. Depending on the class of the mission, you will have different amount of budget. Make sure the cost of your telescope does not exceed your budget!</p>
-  </div>
+
     <form id="create-form" action="{{ url_for('create_telescope') }}" method="POST">
-        
+        <div class="small-container">
+          <h3>Design your own space telescope!</h3>
+          <p>Each proposed telescope has an estimated cost, which is the total cost of all the components of the telescope. Depending on the class of the mission, you will have different amount of budget. Make sure the cost of your telescope does not exceed your budget!</p>
+        </div>
         {{ create_form.csrf_token() }}
         {{ create_form.cost_value }}
-        <div class="small-container">
-          {{ create_form.telescope_name.label }} <span id="telescope-span">{{ create_form.telescope_name }}</span>
+        <div class="small-container telescope-container">
+          {{ create_form.telescope_name.label }} {{ create_form.telescope_name }}
         </div>
-        <br>
+        <div class="cards-container">
+          <div class="card">
         {{ create_form.class_name.label }}
         {{ create_form.class_name }}
-        <br>
+          </div>
+          <div class="card">
         {{ create_form.location.label }}
         {{ create_form.location }}
-        <br>
+          </div>
+          <div class="card">
         {{ create_form.wavelength.label }}
         {{ create_form.wavelength }}
-        <br>
+          </div>
+          <div class="card">
         {{ create_form.temperature.label }}
         {{ create_form.temperature }}
-        <br>
+          </div>
+          <div class="card">
         {{ create_form.design.label }}
         {{ create_form.design }}
-        <br>
+          </div>
+          <div class="card">
         {{ create_form.optics.label }}
         {{ create_form.optics }}
-        <br>
+          </div>
+          <div class="card">
         {{ create_form.fov.label }}
         {{ create_form.fov }}
-        <br>
+          </div>
+          <div class="card">
         {{ create_form.instrument.label }}
         {{ create_form.instrument }}
-        <br>
+          </div>
+          <div class="card">
         {{ create_form.extras.label }}
         {{ create_form.extras }}
-        <br> 
+          </div>
+        </div>
     </form>
 </div>
 
@@ -129,7 +139,7 @@ cost_lists.forEach((cost_list, index) => {
     li_list[i].appendChild(span);
     text = cost_list[i];
     if (cost_list == class_list_cost) {
-      span.textContent = text;
+      span.textContent = "+"+text;
     } else {
       span.textContent = -text;
     }

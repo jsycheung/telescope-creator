@@ -1,43 +1,55 @@
 {% extends "base.html" %}
 {% block body %}
-<div class="form-container">
-    <h3>Edit Telescope</h3>
-    <form action="{{ url_for('edit', telescope_id=current_telescope.telescope_id) }}" method="POST">
-        
+<div class="container">
+    <form id="edit-form" action="{{ url_for('edit', telescope_id=current_telescope.telescope_id) }}" method="POST">
+        <div class="small-container">
+            <h3>Edit your telescope!</h3>
+            <p>You can edit any properties of your existing telescoe here. Make sure the cost of your telescope does not exceed your updated budget!</p>
+          </div>
         {{ edit_form.csrf_token() }}
         {{ edit_form.cost_value }}
         {{ edit_form.submit }}
-        {{ edit_form.telescope_name.label }}
-        {{ edit_form.telescope_name }}
-        <br>
+        <div class="small-container telescope-container">
+            {{ edit_form.telescope_name.label }} {{ edit_form.telescope_name }}
+        </div>
+        <div class="cards-container">
+        <div class="card">
         {{ edit_form.class_name.label }}
         {{ edit_form.class_name }}
-        <br>
+        </div>
+        <div class="card">
         {{ edit_form.location.label }}
         {{ edit_form.location }}
-        <br>
+        </div>
+        <div class="card">
         {{ edit_form.wavelength.label }}
         {{ edit_form.wavelength }}
-        <br>
+        </div>
+        <div class="card">
         {{ edit_form.temperature.label }}
         {{ edit_form.temperature }}
-        <br>
+        </div>
+        <div class="card">
         {{ edit_form.design.label }}
         {{ edit_form.design }}
-        <br>
+        </div>
+        <div class="card">
         {{ edit_form.optics.label }}
         {{ edit_form.optics }}
-        <br>
+        </div>
+        <div class="card">
         {{ edit_form.fov.label }}
         {{ edit_form.fov }}
-        <br>
+        </div>
+        <div class="card">
         {{ edit_form.instrument.label }}
         {{ edit_form.instrument }}
-        <br>
+        </div>
+        <div class="card">
         {{ edit_form.extras.label }}
         {{ edit_form.extras }}
-        <br>
-        
+        </div>
+        </div>
     </form>
 </div>
 <script>

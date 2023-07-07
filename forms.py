@@ -29,24 +29,23 @@ class CreateForm(FlaskForm):
     telescope_name = StringField(
         "Telescope name", validators=[InputRequired()])
     class_name = RadioField(
-        "Select class: ", choices=class_list, coerce=int, validators=[InputRequired()])
-    location = RadioField("Select location: ",
+        "Class", choices=class_list, coerce=int, validators=[InputRequired()])
+    location = RadioField("Location",
                           choices=location_list, coerce=int, validators=[InputRequired()])
-    wavelength = MultiCheckboxField("Select wavelength range: ",
+    wavelength = MultiCheckboxField("Wavelength Range (multiple allowed)",
                                     choices=wavelength_list, coerce=int, validators=[InputRequired()])
     temperature = MultiCheckboxField(
-        "Select operating temperature: ", choices=temperature_list, coerce=int, validators=[InputRequired()])
+        "Operating Temperature (multiple allowed)", choices=temperature_list, coerce=int, validators=[InputRequired()])
     design = RadioField(
-        "Select design: ", choices=design_list, coerce=int, validators=[InputRequired()])
+        "Design", choices=design_list, coerce=int, validators=[InputRequired()])
     optics = RadioField(
-        "Select optics: ", choices=optics_list, coerce=int, validators=[InputRequired()])
-    fov = MultiCheckboxField("Select field of view: ",
+        "Optics", choices=optics_list, coerce=int, validators=[InputRequired()])
+    fov = MultiCheckboxField("Field of View (multiple allowed)",
                              choices=fov_list, coerce=int, validators=[InputRequired()])
     instrument = MultiCheckboxField(
-        "Select instrument: ", choices=instrument_list, coerce=int, validators=[InputRequired()])
-    extras = MultiCheckboxField("Select add-ons: ",
+        "Instrument (multiple allowed)", choices=instrument_list, coerce=int, validators=[InputRequired()])
+    extras = MultiCheckboxField("Add-ons (optional, multiple allowed)",
                                 choices=extras_list, coerce=int)
-    submit = SubmitField("Submit")
 # cannot validate multicheckboxfield
 
 
