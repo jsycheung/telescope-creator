@@ -1,16 +1,8 @@
-import os
-from flask_sqlalchemy import SQLAlchemy
+
 from sqlalchemy.dialects.postgresql import JSON
 from flask_login import UserMixin
+from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
-
-
-def connect_to_db(app):
-    # Have to run command "source config.sh"
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["POSTGRES_URI"]
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    db.app = app
-    db.init_app(app)
 
 
 class User(UserMixin, db.Model):
@@ -51,11 +43,11 @@ class Telescope(db.Model):
         return f"<Telescope telescope_id={self.telescope_id} user_id={self.user_id}>"
 
 
-if __name__ == "__main__":
-    from flask import Flask
-    app = Flask(__name__)
-    connect_to_db(app)
-    print("Connected to db...")
+# if __name__ == "__main__":
+#     from flask import Flask
+#     app = Flask(__name__)
+#     connect_to_db(app)
+#     print("Connected to db...")
 
 '''
 To add tables into the database, run 'python -i model.py' in terminal, then run

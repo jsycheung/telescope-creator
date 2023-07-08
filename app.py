@@ -1,13 +1,15 @@
 from flask import Flask, render_template, redirect, url_for, flash, request
-from forms import CreateForm, LoginForm, SignupForm
-from model import db, Telescope, connect_to_db, User
+from forms import CreateForm, LoginForm, SignupForm, EditForm
+from model import db, Telescope, User
 from lists import class_list, location_list, wavelength_list, temperature_list, design_list, optics_list, fov_list, instrument_list, extras_list, class_list_cost, location_list_cost, wavelength_list_cost, temperature_list_cost, design_list_cost, optics_list_cost, fov_list_cost, instrument_list_cost, extras_list_cost
 from crud import get_user_by_email, get_user_by_username, create_user, crud_create_telescope, get_telescope_by_id
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, LoginManager, current_user, logout_user, login_required
+import os
 
 
 app = Flask(__name__)
+app.secret_key = "keep this secret"
 login_manager = LoginManager()
 bcrypt = Bcrypt(app)
 login_manager.init_app(app)
@@ -200,6 +202,16 @@ def delete(telescope_id):
 
 if __name__ == "__main__":
     with app.app_context():
-        app.secret_key = "keep this secret"
-        connect_to_db(app)
-        app.run(debug=True)
+        app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["POSTGRES_URI"]
+        app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+        db.init_app(app)
+        db.create_all()
+        username = "guest"
+        email = "guest@guest.com"
+        hashed_password = bcrypt.generate_password_hash(
+            "12345678").decode('utf-8')
+        user = create_user(username, email, hashed_password)
+        if get_user_by_email(email) is None:
+            db.session.add(user)
+            db.session.commit()
+    app.run(debug=True)

@@ -47,3 +47,7 @@ class CreateForm(FlaskForm):
     extras = MultiCheckboxField("Add-ons (optional, multiple allowed)",
                                 choices=extras_list, coerce=int)
 # cannot validate multicheckboxfield
+
+
+class EditForm(CreateForm):
+    pass
