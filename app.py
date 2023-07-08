@@ -9,6 +9,12 @@ from flask_login import login_user, LoginManager, current_user, logout_user, log
 
 app = Flask(__name__)
 login_manager = LoginManager()
+bcrypt = Bcrypt(app)
+login_manager.init_app(app)
+login_manager.session_protection = "strong"
+login_manager.login_view = "login"
+login_manager.login_message = ''
+login_manager.login_message_category = "info"
 
 
 @login_manager.user_loader
@@ -195,11 +201,5 @@ def delete(telescope_id):
 if __name__ == "__main__":
     with app.app_context():
         app.secret_key = "keep this secret"
-        bcrypt = Bcrypt(app)
-        login_manager.init_app(app)
-        login_manager.session_protection = "strong"
-        login_manager.login_view = "login"
-        login_manager.login_message = ''
-        login_manager.login_message_category = "info"
         connect_to_db(app)
         app.run(debug=True)
