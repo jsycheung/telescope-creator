@@ -22,6 +22,7 @@
             <a class="nav-link nav-right" href="{{ url_for('logout') }}">Log out</a>
         </div>
     </nav>
+    {% if create_form or edit_form %}
     <div class="navbar navbar-dark bg-black">
         <div class="navbar-nav flex-row">
             <ul>
@@ -36,17 +37,19 @@
         {% elif edit_form %}
         <input id="submit" type="submit" form="edit-form" value="Update my telescope!">
         {% endif %}
-    </div></div>
+    </div>
+    {% endif %}
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
                 <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
                 {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             {% endfor %}
         {% endif %}
     {% endwith %}
+    </div>
     {% block body %}
         BODY OF PAGE GOES HERE VIA INHERITANCE
     {% endblock %}
@@ -54,3 +57,14 @@
 
 </body>
 </html>
+<script>
+    const inputs = document.querySelectorAll('input');
+    Array.from(inputs).forEach((input-field, index), () => {
+        input-field.addEventListener("invalid", (e) => {
+          e.preventDefault();
+          
+          input-field.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          })})})
+</script>

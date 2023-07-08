@@ -1,20 +1,28 @@
 {% extends "base.html" %}
 {% block body %}
+<div class="container">
+<div class="cards-container inventory-container">
 {% for telescope in telescopes %}
-<div class="telescope-container">
-    Name: {{ telescope.telescope_name }}
-    Class: {{ telescope.class_name }}
-    Location: {{ telescope.location }}
-    Wavelength: {{ ', '.join(telescope.wavelength) }}
-    Temperature: {{ ', '.join(telescope.temperature) }}
-    Design: {{ telescope.design }}
-    Optics: {{ telescope.optics }}
-    Fov: {{ ', '.join(telescope.fov) }}
-    Instrument: {{ ', '.join(telescope.instrument) }}
-    Extras: {{ ', '.join(telescope.extras) }}
-    Cost: {{ telescope.cost }}
-    <a class="delete-btns" id="delete-btn-{{telescope.telescope_id}}" href="{{ url_for('delete',telescope_id=telescope.telescope_id) }}" onclick="return confirm('Do you wish to delete telescope {{ telescope.telescope_name }}?')">Delete</a>
+    <div class="inventory-card">
+    <ul>
+    <li>Name: {{ telescope.telescope_name }}</li>
+    <li>Class: {{ telescope.class_name }}</li>
+    <li>Location: {{ telescope.location }}</li>
+    <li>Wavelength: {{ ', '.join(telescope.wavelength) }}</li>
+    <li>Temperature: {{ ', '.join(telescope.temperature) }}</li>
+    <li>Design: {{ telescope.design }}</li>
+    <li>Optics: {{ telescope.optics }}</li>
+    <li>Fov: {{ ', '.join(telescope.fov) }}</li>
+    <li>Instrument: {{ ', '.join(telescope.instrument) }}</li>
+    <li>Extras: {{ ', '.join(telescope.extras) }}</li>
+    <li>Cost: {{ telescope.cost }}</li>
+    </ul>
+    <div class="btns">
     <a class="edit-btns" id="edit-btn-{{telescope.telescope_id}}" href="{{ url_for('edit',telescope_id=telescope.telescope_id) }}">Edit</a>
+    <a class="delete-btns" id="delete-btn-{{telescope.telescope_id}}" href="{{ url_for('delete',telescope_id=telescope.telescope_id) }}" onclick="return confirm('Do you wish to delete telescope {{ telescope.telescope_name }}?')">Delete</a>
+    </div>
+    </div>
+    {% endfor %}
 </div>
-{% endfor %}
+</div>
 {% endblock %}

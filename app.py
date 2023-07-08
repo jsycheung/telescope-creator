@@ -56,6 +56,13 @@ def login():
     return render_template("login.html", login_form=login_form)
 
 
+@app.route("/guest-login")
+def guest_login():
+    user = get_user_by_email("guest@guest.com")
+    login_user(user)
+    return redirect(url_for("home"))
+
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     signup_form = SignupForm()
@@ -75,11 +82,6 @@ def signup():
             flash("Account successfully created. Please log in.", "successful")
             return redirect(url_for("login"))
     return render_template("signup.html", signup_form=signup_form)
-
-# @app.route("/info")
-# def info():
-#     team_list, project_list = get_team_project_list()
-#     return render_template("info.html", team_list=team_list, project_list=project_list)
 
 
 @app.route("/create-telescope", methods=["POST"])
@@ -187,6 +189,9 @@ def inventory():
 @login_required
 def delete(telescope_id):
     telescope = get_telescope_by_id(telescope_id)
+    if current_user != telescope.user:
+        flash("Sorry, you don't have access to this telescope.", "dangerous")
+        return redirect(url_for("inventory"))
     db.session.delete(telescope)
     db.session.commit()
     flash(

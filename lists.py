@@ -3,7 +3,7 @@ class_list = [(0, "Flagship"), (1, "Probe"),
 class_list_cost = [10000, 5000, 2000, 1000]
 location_list = [(0, "Near Earth Orbit [Hubble]"), (1, "L2 [JWST]"), (2, "Other Solar System Orbit [Spitzer]"),
                  (3, "The Moon [Artemis]"), (4, "Outside of the Solar System [Voyager]")]
-location_list_cost = [100, 100, 100, 100, 100]
+location_list_cost = [1000, 100, 100, 100, 100]
 wavelength_list = [(0, "Gamma Ray"), (1, "X-Ray"), (2, "UV"), (3, "Visible"),
                    (4, "Infrared"), (5, "Microwave/Sub-millimeter"), (6, "Radio")]
 wavelength_list_cost = [100, 100, 100, 100, 100, 100, 100]
