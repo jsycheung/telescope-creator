@@ -200,5 +200,6 @@ def delete(telescope_id):
 
 
 if __name__ == "__main__":
-    connect_to_db(app)
+    with app.app_context():
+        connect_to_db(app)
     app.run(debug=True)
