@@ -200,7 +200,7 @@ def delete(telescope_id):
     return redirect(url_for("inventory"))
 
 
-if __name__ == "__main__":
+if __name__ == "__main__" or __name__ == "app":
     with app.app_context():
         app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["POSTGRES_URI"]
         app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
