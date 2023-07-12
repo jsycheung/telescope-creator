@@ -136,6 +136,10 @@ cost_lists.forEach((cost_list, index) => {
     .getElementsByTagName("li");
   for (let i = 0; i < cost_list.length; i++) {
     const span = document.createElement("span");
+    span.addEventListener("click",(e) => {
+      e.preventDefault();
+      span.previousElementSibling.previousElementSibling.click();
+    })
     li_list[i].appendChild(span);
     text = cost_list[i];
     if (cost_list == class_list_cost) {
