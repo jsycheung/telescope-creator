@@ -1,4 +1,5 @@
 # Unit test script for model.py, which contains the SQLAlchemy interface to the postgreSQL database on AWS RDS
+# Terminal script to run unit tests: python -m pytest tests/unit/
 import pytest
 from model import User, Telescope
 
@@ -47,5 +48,3 @@ def test_new_telescope(new_telescope, new_user):
     assert new_telescope.extras == ["Coronograph"]
     assert new_telescope.cost == 1000
     assert new_telescope.user == new_user
-
-# Terminal script to run unit tests: python -m pytest tests/unit/

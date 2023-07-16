@@ -26,7 +26,6 @@ def crud_create_telescope(telescope_name, class_name, location, wavelength, temp
 
 
 def get_telescope_by_id(telescope_id):
-    # telescope = Telescope.query.filter_by(telescope_id=telescope_id).first()
     telescope = db.session.query(Telescope).filter(
         Telescope.telescope_id == telescope_id).first()
     return telescope
