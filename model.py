@@ -41,17 +41,3 @@ class Telescope(db.Model):
 
     def __repr__(self):
         return f"<Telescope telescope_id={self.telescope_id} user_id={self.user_id}>"
-
-
-# if __name__ == "__main__":
-#     from flask import Flask
-#     app = Flask(__name__)
-#     connect_to_db(app)
-#     print("Connected to db...")
-
-'''
-To add tables into the database, run 'python -i model.py' in terminal, then run
-'with app.app_context():
-    db.create_all()'
-in interactive mode.
-'''
