@@ -307,3 +307,21 @@ div.alert {
 .delete-btns {
   background-color: #5f0b0b !important;
 }
+
+#author {
+  text-align: center;
+  color: white;
+  font-weight: 400 !important;
+  font-size: medium;
+  z-index: 0;
+  width: 100%;
+  padding: 2em;
+}
+
+#author-email,
+#author-email:visited,
+#author-linkedin,
+#author-linkedin:visited {
+  color: white;
+  font-weight: 400 !important;
+}

@@ -77,20 +77,34 @@ label {
   margin-top: 20px;
 }
 
-#credits {
+a:link,
+a:visited {
+  color: #1a1831;
+}
+
+#author-info {
   position: absolute;
   left: 5px;
   bottom: 0;
   color: white;
   font-weight: 400 !important;
-  font-size: xx-small;
+  font-size: x-small;
   z-index: 0;
   width: 100%;
+  padding: 2em;
 }
 
-a:link,
-a:visited {
-  color: #1a1831;
+#author {
+  font-size: medium;
+  font-weight: 400 !important;
+}
+
+#author-email,
+#author-email:visited,
+#author-linkedin,
+#author-linkedin:visited {
+  color: white;
+  font-weight: 400 !important;
 }
 
 .alert-successful {

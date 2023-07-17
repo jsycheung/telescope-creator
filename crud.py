@@ -1,3 +1,6 @@
+'''
+Contains crud functions to query database and create database entries.
+'''
 from model import User, Telescope, db
 
 
@@ -26,6 +29,7 @@ def crud_create_telescope(telescope_name, class_name, location, wavelength, temp
 
 
 def get_telescope_by_id(telescope_id):
+    '''Return a telescope by telescope_id'''
     telescope = db.session.query(Telescope).filter(
         Telescope.telescope_id == telescope_id).first()
     return telescope

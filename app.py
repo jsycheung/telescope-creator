@@ -1,3 +1,6 @@
+'''
+Contains the backbone of the Flask app - all view functions necessary to the app.
+'''
 from flask import Flask, render_template, redirect, url_for, flash
 from forms import CreateForm, LoginForm, SignupForm, EditForm
 from model import db, Telescope, User
@@ -7,26 +10,32 @@ from flask_bcrypt import Bcrypt
 from flask_login import login_user, LoginManager, current_user, logout_user, login_required
 import os
 
-
+# Create a Flask application object.
 app = Flask(__name__)
+# Define app secret key.
 app.secret_key = "keep this secret"
+# Create a LoginManager object for login functionality.
 login_manager = LoginManager()
-bcrypt = Bcrypt(app)
 login_manager.init_app(app)
 login_manager.session_protection = "strong"
 login_manager.login_view = "login"
+# Set login_message to an empty string so that message does not pop up every time user is redirected to login page.
 login_manager.login_message = ''
 login_manager.login_message_category = "info"
+# Create a Bcrypt object for hashing passwords.
+bcrypt = Bcrypt(app)
 
 
 @login_manager.user_loader
 def load_user(user_id):
+    '''Get current user in the session.'''
     return db.session.get(User, user_id)
 
 
 @app.route("/")
 @login_required
 def home():
+    '''Render homepage for creating telescopes.'''
     create_form = CreateForm()
     return render_template("home.html", create_form=create_form, class_list=class_list, class_list_cost=class_list_cost, location_list_cost=location_list_cost, wavelength_list_cost=wavelength_list_cost, temperature_list_cost=temperature_list_cost, design_list_cost=design_list_cost, optics_list_cost=optics_list_cost, fov_list_cost=fov_list_cost, instrument_list_cost=instrument_list_cost, extras_list_cost=extras_list_cost)
 
@@ -34,6 +43,7 @@ def home():
 @app.route("/logout")
 @login_required
 def logout():
+    '''Log out user and redirect to login page.'''
     logout_user()
     flash("You have logged out successfully!", "successful")
     return redirect(url_for("login"))
@@ -41,13 +51,17 @@ def logout():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    '''Renders log in page and contains logic for logging in user.'''
     login_form = LoginForm()
     if login_form.validate_on_submit():
+        '''Handle logic after submitting login form.'''
         email = login_form.email.data
         user = get_user_by_email(email)
         if user:
+            '''If user with specified email exists, proceed. If not, flash email not registered.'''
             password = login_form.password.data.encode("utf-8")
             if bcrypt.check_password_hash(user.hashed_password, password):
+                '''If user with specified email exists and the password is correct, log in user and redirect to home page for creating telescope. If not, flash wrong password.'''
                 login_user(user)
                 return redirect(url_for("home"))
             else:
@@ -59,6 +73,7 @@ def login():
 
 @app.route("/guest-login")
 def guest_login():
+    '''For quick access to webpage using guest account. Automatically log into guest account without entering email and password.'''
     user = get_user_by_email("guest@guest.com")
     login_user(user)
     return redirect(url_for("home"))
@@ -66,15 +81,20 @@ def guest_login():
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
+    '''Renders sign up page and contains logic for creating a new user.'''
     signup_form = SignupForm()
     if signup_form.validate_on_submit():
+        '''Handle logic after submitting sign up form.'''
         username = signup_form.username.data
         email = signup_form.email.data
         if get_user_by_email(email):
+            '''If the email is registered, flash warning message.'''
             flash("Email already registered. Please log in.", "dangerous")
         elif get_user_by_username(username):
+            '''Make sure the username is not used already in existing users.'''
             flash("Username is used. Please select a new username.", "dangerous")
         else:
+            '''If the email is not registered before and the username is unique, then create a new user in the database and redirect to log in page.'''
             hashed_password = bcrypt.generate_password_hash(
                 signup_form.password.data).decode('utf-8')
             user = create_user(username, email, hashed_password)

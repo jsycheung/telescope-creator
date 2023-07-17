@@ -1,3 +1,6 @@
+'''
+Define a custom wtforms field to set SelectMultipleField to checkboxes instead of a list of options.
+'''
 from wtforms import widgets, SelectMultipleField
 
 

@@ -1,11 +1,16 @@
-
+'''
+Contains the SQLAlchemy interface to the postgreSQL database on AWS RDS.
+'''
 from sqlalchemy.dialects.postgresql import JSON
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
+
+# Create SQLAlchemy object.
 db = SQLAlchemy()
 
 
 class User(UserMixin, db.Model):
+    '''Create users table.'''
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -21,6 +26,7 @@ class User(UserMixin, db.Model):
 
 
 class Telescope(db.Model):
+    '''Create telescopes table. The columns where the input is a list (multiple options allowed) is set to JSON.'''
     __tablename__ = "telescopes"
 
     telescope_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
