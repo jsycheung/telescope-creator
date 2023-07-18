@@ -253,4 +253,4 @@ if __name__ == "__main__" or __name__ == "app":
             '''Pre-populate the database with guest user.'''
             db.session.add(user)
             db.session.commit()
-    app.run(host="0.0.0.0", port=80)
+    app.run()
