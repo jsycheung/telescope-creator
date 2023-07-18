@@ -254,3 +254,5 @@ if __name__ == "__main__" or __name__ == "app":
             db.session.add(user)
             db.session.commit()
     app.run(host="0.0.0.0")
+
+# To run app in the background, use command: nohup python3 app.py &
