@@ -18,6 +18,7 @@ app.secret_key = "keep this secret"
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.session_protection = "strong"
+# login_view sets the endpoint to direct to if the page requires login but the user is not logged in yet.
 login_manager.login_view = "login"
 # Set login_message to an empty string so that message does not pop up every time user is redirected to login page.
 login_manager.login_message = ''
