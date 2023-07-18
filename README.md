@@ -1,8 +1,8 @@
 # Welcome to Telescope Creator!
 
-This is a web app for the public to learn about space telescopes, by 'building' one themselves! Make sure the cost of your telescope does not exceed your budget!
+This is a full-stack web app for the public to learn about space telescopes, by 'building' one themselves! Make sure the cost of your telescope does not exceed your budget!
 
-The web app is hosted on Amazon EC2 [here](http://ec2-54-221-110-95.compute-1.amazonaws.com/).
+The web app is hosted on Amazon EC2 [here](http://ec2-54-221-110-95.compute-1.amazonaws.com/). The database is hosted on Amazon RDS.
 
 The development of this web app follows the Software Development Life Cycle (SDLC).
 
@@ -11,3 +11,6 @@ The development of this web app follows the Software Development Life Cycle (SDL
 - Build - Coding phase starts, keep track of progress using Trello, make sure to comment on code.
 - Test - Write unit tests with pytest and do manual tests, manage testing using Jira.
 - Deployment - Deploy website on Amazon EC2, also tried running the app locally on Docker.
+
+Technology:
+HTML5, CSS, Bootstrap, JavaScript, Python, Flask, SQLAlchemy, Docker, Amazon Relational Database Service (PostgreSQL), Amazon EC2, Figma
