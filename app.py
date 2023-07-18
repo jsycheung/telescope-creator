@@ -66,8 +66,10 @@ def login():
                 return redirect(url_for("home"))
             else:
                 flash("Wrong password.", "dangerous")
+                return render_template("login.html", login_form=login_form), 401
         else:
             flash("Email is not registered.", "dangerous")
+            return render_template("login.html", login_form=login_form), 409
     return render_template("login.html", login_form=login_form)
 
 
@@ -90,9 +92,11 @@ def signup():
         if get_user_by_email(email):
             '''If the email is registered, flash warning message.'''
             flash("Email already registered. Please log in.", "dangerous")
+            return render_template("signup.html", signup_form=signup_form), 409
         elif get_user_by_username(username):
             '''Make sure the username is not used already in existing users.'''
             flash("Username is used. Please select a new username.", "dangerous")
+            return render_template("signup.html", signup_form=signup_form), 409
         else:
             '''If the email is not registered before and the username is unique, then create a new user in the database and redirect to log in page.'''
             hashed_password = bcrypt.generate_password_hash(
@@ -108,9 +112,12 @@ def signup():
 @app.route("/create-telescope", methods=["POST"])
 @login_required
 def create_telescope():
+    '''Contains form and logic for creating a new telescope.'''
     create_form = CreateForm()
     if create_form.validate_on_submit():
+        '''Handle logic after submitting create form.'''
         telescope_name = create_form.telescope_name.data
+        '''Get the item tuple in corresponding list by index, and access the name of the item using index 1.'''
         class_name = class_list[int(create_form.class_name.data)][1]
         location = location_list[int(create_form.location.data)][1]
         wavelength = [wavelength_list[i][1]
@@ -125,32 +132,35 @@ def create_telescope():
         extras = [extras_list[i][1] for i in create_form.extras.data]
         cost = int(create_form.cost_value.data)
         if cost > class_list_cost[int(create_form.class_name.data)]:
+            '''If the cost of the telescope exceeds the budget of the class of telescope, don't let the user create the telescope.'''
             flash("Your budget is exceeded, telescope cannot be created.", "dangerous")
             return redirect(url_for("home"))
+        # Create a new telescope object and add to database.
         new_telescope = crud_create_telescope(telescope_name, class_name, location, wavelength, temperature,
                                               design, optics, fov, instrument, extras, cost, current_user)
         db.session.add(new_telescope)
         db.session.commit()
         flash("Telescope created successfully!", "successful")
         return redirect(url_for("home"))
-    else:
-        flash("Telescope not created", "dangerous")
-        return redirect(url_for("home"))
 
 
 @app.route("/edit/<int:telescope_id>", methods=["GET", "POST"])
 @login_required
 def edit(telescope_id):
-    current_telescope = get_telescope_by_id(telescope_id)
+    '''Renders edit page and contains logic for editing telescope entry in the database.'''
+    current_telescope = get_telescope_by_id(
+        telescope_id)  # Get the telescope for editing.
     if current_user != current_telescope.user:
+        '''If a user try to access a telescope id that is not created by the user, they will be denied access.'''
         flash("Sorry, you don't have access to this telescope.", "dangerous")
         return redirect(url_for("inventory"))
     edit_form = EditForm()
 
     # Have to make sure the validate_on_submit block come first, otherwise if we make a post request, the new data will be overwritten by the existing one.
     if edit_form.validate_on_submit():
+        '''Handles logic after submitting edit form.'''
         current_telescope.telescope_name = edit_form.telescope_name.data
-        print(edit_form.telescope_name.data)
+        '''Get the item tuple in corresponding list by index, and access the name of the item using index 1. Change the telescope attribute accordingly.'''
         current_telescope.class_name = class_list[int(
             edit_form.class_name.data)][1]
         current_telescope.location = location_list[int(
@@ -168,13 +178,16 @@ def edit(telescope_id):
                                     for i in edit_form.extras.data]
         current_telescope.cost = int(edit_form.cost_value.data)
         if current_telescope.cost > class_list_cost[int(edit_form.class_name.data)]:
+            '''If the cost of the updated telescope exceeds the budget of the updated class of the telescope, do not allow user to update the telescope.'''
             flash("Your budget is exceeded, telescope cannot be updated.", "dangerous")
             return redirect(url_for("edit", telescope_id=current_telescope.telescope_id))
-        db.session.merge(current_telescope)
+        # Update telescope entry in database.
+        db.session.add(current_telescope)
         db.session.commit()
         flash(
             f"Telescope {current_telescope.telescope_name} updated!", "successful")
         return redirect(url_for("inventory"))
+    '''When first rendering the edit form, pre-fill it with existing data of the telescope.'''
     edit_form.telescope_name.data = current_telescope.telescope_name
     edit_form.class_name.data = [item[1] for item in class_list].index(
         current_telescope.class_name)
@@ -201,6 +214,7 @@ def edit(telescope_id):
 @app.route("/inventory")
 @login_required
 def inventory():
+    '''Renders inventory page and contains logic that retrieves all telescope entries in the database to display on the webpage.'''
     telescopes = Telescope.query.filter_by(
         user=current_user)  # List of objects
     return render_template("inventory.html", telescopes=telescopes)
@@ -209,10 +223,13 @@ def inventory():
 @app.route("/delete/<int:telescope_id>")
 @login_required
 def delete(telescope_id):
+    '''Contains logic to handle deletion of telescope entry in the database.'''
     telescope = get_telescope_by_id(telescope_id)
     if current_user != telescope.user:
+        # If a user tries to access the endpoint corresponding to a telescope created by a different user, deny access.
         flash("Sorry, you don't have access to this telescope.", "dangerous")
         return redirect(url_for("inventory"))
+    # Delete telescope entry in database.
     db.session.delete(telescope)
     db.session.commit()
     flash(
@@ -232,6 +249,7 @@ if __name__ == "__main__" or __name__ == "app":
             "12345678").decode('utf-8')
         user = create_user(username, email, hashed_password)
         if get_user_by_email(email) is None:
+            '''Pre-populate the database with guest user.'''
             db.session.add(user)
             db.session.commit()
     app.run(debug=True)

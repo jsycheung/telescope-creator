@@ -55,6 +55,32 @@
 
 
 <script>
+  // The code is highly similar to that in edit.html
+// Retrieve all item lists and cost lists
+const class_list = JSON.parse('{{ class_list | tojson }}');
+const class_list_cost = JSON.parse("{{ class_list_cost | tojson }}");
+const location_list_cost = JSON.parse("{{ location_list_cost | tojson }}");
+const wavelength_list_cost = JSON.parse("{{ wavelength_list_cost | tojson }}");
+const temperature_list_cost = JSON.parse(
+  "{{ temperature_list_cost | tojson }}"
+);
+const design_list_cost = JSON.parse("{{ design_list_cost | tojson }}");
+const optics_cost = JSON.parse("{{ optics_list_cost | tojson }}");
+const fov_list_cost = JSON.parse("{{ fov_list_cost | tojson }}");
+const instrument_list_cost = JSON.parse("{{ instrument_list_cost | tojson }}");
+const extras_list_cost = JSON.parse("{{ extras_list_cost | tojson }}");
+
+const cost_lists = [
+  class_list_cost,
+  location_list_cost,
+  wavelength_list_cost,
+  temperature_list_cost,
+  design_list_cost,
+  optics_cost,
+  fov_list_cost,
+  instrument_list_cost,
+  extras_list_cost,
+];
 const labels_list = [
   "class_name",
   "location",
@@ -68,29 +94,6 @@ const labels_list = [
 ];
 const class_name_ul = document.querySelector("#class_name");
 const class_name_li = class_name_ul.getElementsByTagName("li");
-const class_list = JSON.parse('{{ class_list | tojson }}');
-const class_list_cost = JSON.parse("{{ class_list_cost | tojson }}");
-const location_list_cost = JSON.parse("{{ location_list_cost | tojson }}");
-const wavelength_list_cost = JSON.parse("{{ wavelength_list_cost | tojson }}");
-const temperature_list_cost = JSON.parse(
-  "{{ temperature_list_cost | tojson }}"
-);
-const design_list_cost = JSON.parse("{{ design_list_cost | tojson }}");
-const optics_cost = JSON.parse("{{ optics_list_cost | tojson }}");
-const fov_list_cost = JSON.parse("{{ fov_list_cost | tojson }}");
-const instrument_list_cost = JSON.parse("{{ instrument_list_cost | tojson }}");
-const extras_list_cost = JSON.parse("{{ extras_list_cost | tojson }}");
-const cost_lists = [
-  class_list_cost,
-  location_list_cost,
-  wavelength_list_cost,
-  temperature_list_cost,
-  design_list_cost,
-  optics_cost,
-  fov_list_cost,
-  instrument_list_cost,
-  extras_list_cost,
-];
 const budget = document.querySelector("#budget");
 const class_identifier = document.querySelector("#class-identifier");
 const cost = document.querySelector("#cost");
@@ -112,6 +115,7 @@ const checkboxes = [
 ];
 const ul_list = [wavelength_ul, temperature_ul, fov_ul, instrument_ul];
 
+// If any of the checkboxes within a UI card is checked, remove the 'requred' attribute from the other checkboxes in the UI card to prevent validation error. We only need at least one of the checkboxes checked, not all.
 ul_list.forEach((item, index) => {
   item.onclick = () => {
     var checked_count = 0;
@@ -139,6 +143,7 @@ cost_lists.forEach((cost_list, index) => {
     const span = document.createElement("span");
     span.addEventListener("click",(e) => {
       e.preventDefault();
+      // such that clicking the span that contains the cost of the item is equivalent to clicking the radio button or checkbox
       span.previousElementSibling.previousElementSibling.click();
     })
     li_list[i].appendChild(span);
@@ -167,6 +172,7 @@ const li_list_except_class = [...document.querySelector("form").getElementsByTag
   class_name_li.length
 );
 
+// function to update cost shown in frontend and also cost_value which is the hidden field of the form.
 function update_cost() {
   cost_sum = 0;
   Array.from(li_list_except_class).forEach((li, index) => {
@@ -186,11 +192,13 @@ function update_cost() {
   cost_value.setAttribute("value", cost_sum);
 }
 
+// Update budget and cost every time after clicking any option within a UI card for class name.
 class_name_ul.onclick = () => {
   update_budget();
   update_cost();
 };
 
+// Update cost every time after clicking any option within a UI card except the UI card for class name.
 for (let i = 0; i < li_list_except_class.length; i++) {
   li_list_except_class[i].onclick = update_cost;
 }
