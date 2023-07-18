@@ -55,7 +55,7 @@ class CreateForm(FlaskForm):
     fov = MultiCheckboxField("Field of View (multiple allowed)",
                              choices=fov_list, coerce=int, validators=[InputRequired()])
     instrument = MultiCheckboxField(
-        "Instrument (multiple allowed)", choices=instrument_list, coerce=int, validators=[InputRequired()])
+        "Instruments (multiple allowed)", choices=instrument_list, coerce=int, validators=[InputRequired()])
     extras = MultiCheckboxField("Add-ons (optional, multiple allowed)",
                                 choices=extras_list, coerce=int)
 

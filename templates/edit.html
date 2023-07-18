@@ -4,7 +4,7 @@
     <form id="edit-form" action="{{ url_for('edit', telescope_id=current_telescope.telescope_id) }}" method="POST">
         <div class="small-container">
             <h3>Edit your telescope!</h3>
-            <p>You can edit any properties of your existing telescoe here. Make sure the cost of your telescope does not exceed your updated budget!</p>
+            <p>You can edit any properties of your existing telescope here. Make sure the cost of your telescope does not exceed your updated budget!</p>
           </div>
         {{ edit_form.csrf_token() }}
         {{ edit_form.cost_value }}
