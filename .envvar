@@ -1,2 +1,0 @@
-POSTGRES_URI=postgresql://postgres:postgres@telescope-database.coap2xbf5pos.us-east-1.rds.amazonaws.com:5432/
-FLASK_APP=app.py
