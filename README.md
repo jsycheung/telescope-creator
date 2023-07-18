@@ -13,4 +13,4 @@ The development of this web app follows the Software Development Life Cycle (SDL
 - Deployment - Deploy website on Amazon EC2, also tried running the app locally on Docker.
 
 Technology:
-HTML5, CSS, Bootstrap, JavaScript, Python, Flask, SQLAlchemy, Docker, Amazon Relational Database Service (PostgreSQL), Amazon EC2, Figma
+HTML5, CSS, Bootstrap, JavaScript, Python, Flask, SQLAlchemy, Docker, Amazon Relational Database Service (PostgreSQL), Amazon EC2, Figma, Jira, Trello
