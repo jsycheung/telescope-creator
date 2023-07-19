@@ -327,3 +327,9 @@ div.alert {
   color: white;
   font-weight: 400 !important;
 }
+
+#error-handler {
+  padding: 4em;
+  color: white;
+  text-align: center;
+}

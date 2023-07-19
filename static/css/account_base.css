@@ -99,6 +99,11 @@ a:visited {
   font-weight: 400 !important;
 }
 
+#author,
+#credits {
+  margin-bottom: 0;
+}
+
 #author-email,
 #author-email:visited,
 #author-linkedin,

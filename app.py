@@ -33,6 +33,12 @@ def load_user(user_id):
     return db.session.get(User, user_id)
 
 
+# make a page that returns page not found
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("error_page.html")
+
+
 @app.route("/")
 @login_required
 def home():
@@ -141,7 +147,7 @@ def create_telescope():
                                               design, optics, fov, instrument, extras, cost, current_user)
         db.session.add(new_telescope)
         db.session.commit()
-        flash("Telescope created successfully!", "successful")
+        flash("Telescope created successfully! You can check it out in the inventory!", "successful")
         return redirect(url_for("home"))
 
 
