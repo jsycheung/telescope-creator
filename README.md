@@ -10,7 +10,7 @@ The development of this web app follows the Software Development Life Cycle (SDL
 - Design - Use Figma to design mockups, accessible [here](https://www.figma.com/file/hPHpn9HBrmu5F9uhcalZZe/telescopes?type=design&node-id=0%3A1&mode=design&t=SSOZiY3Z2OCCLuZt-1).
 - Build - Coding phase starts, keep track of progress using Trello, make sure to comment on code.
 - Test - Write unit tests with pytest and do manual tests, manage testing using Jira.
-- Deployment - Deploy website on Amazon EC2, also tried running the app locally on Docker.
+- Deployment - Deploy website on Amazon EC2, the app can also run locally on Docker.
 
 Technology:
 HTML5, CSS, Bootstrap, JavaScript, Python, Flask, SQLAlchemy, Docker, Amazon Relational Database Service (PostgreSQL), Amazon EC2, Figma, Jira, Trello
